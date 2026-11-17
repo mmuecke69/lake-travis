@@ -69,6 +69,10 @@ header .sub { color: var(--muted); font-size: .92rem; margin: 0 0 16px; }
 .callout { border-left: 4px solid var(--lake); padding: 2px 0 2px 12px; }
 .callout p { margin: 0 0 6px; }
 .callout .asof { color: var(--muted); font-size: .85rem; }
+.callout .note-level { font-weight: 700; margin: 0 0 8px; }
+.callout .note-body { white-space: pre-wrap; }
+#when { color: var(--muted); font-size: .92rem; margin-top: 6px; }
+#when .site { display: block; margin-top: 2px; }
 h2 { font-size: 1.15rem; margin: 0 0 10px; letter-spacing: -0.02em; }
 h3 { font-size: 1.02rem; margin: 16px 0 8px; }
 .toggles { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
@@ -202,24 +206,94 @@ footer { color: var(--muted); font-size: .82rem; margin-top: 8px; }
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script>
 (function () {
-  function dataUrl() {
-    if (window.LAKE_TRAVIS_DATA_URL) return window.LAKE_TRAVIS_DATA_URL;
-    const q = new URLSearchParams(location.search).get("data");
+  var LIVE_DATA_URL = "https://mmuecke69.github.io/lake-travis/data.json";
+
+  function cacheBust(url) {
+    try {
+      var u = new URL(url, location.href);
+      u.searchParams.set("t", String(Date.now()));
+      return u.toString();
+    } catch (e) {
+      return url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    }
+  }
+
+  function relativeDataUrl() {
+    var q = new URLSearchParams(location.search).get("data");
     if (q) return q;
-    const meta = document.querySelector('meta[name="lake-travis-data-url"]');
+    var meta = document.querySelector('meta[name="lake-travis-data-url"]');
     if (meta && meta.content) return meta.content;
     return "data.json";
   }
 
-  function loadData() {
-    const inline = document.getElementById("data");
-    if (inline && inline.textContent.trim()) {
-      return Promise.resolve(JSON.parse(inline.textContent));
-    }
-    return fetch(dataUrl(), { cache: "no-store" }).then(function (res) {
-      if (!res.ok) throw new Error("Could not load " + dataUrl() + " (" + res.status + ")");
+  function dataCandidates() {
+    if (window.LAKE_TRAVIS_DATA_URL) return [window.LAKE_TRAVIS_DATA_URL];
+    var list = [LIVE_DATA_URL];
+    var rel = relativeDataUrl();
+    if (rel && rel !== LIVE_DATA_URL) list.push(rel);
+    return list;
+  }
+
+  function parseInlineData() {
+    var inline = document.getElementById("data");
+    if (!inline || !inline.textContent.trim()) return null;
+    try { return JSON.parse(inline.textContent); }
+    catch (e) { return null; }
+  }
+
+  function fetchJson(url) {
+    return fetch(cacheBust(url), { cache: "no-store" }).then(function (res) {
+      if (!res.ok) throw new Error("Could not load " + url + " (" + res.status + ")");
       return res.json();
     });
+  }
+
+  function loadData() {
+    var urls = dataCandidates();
+    var chain = Promise.reject(new Error("no data url"));
+    urls.forEach(function (url) {
+      chain = chain.catch(function () { return fetchJson(url); });
+    });
+    return chain.catch(function (err) {
+      var inline = parseInlineData();
+      if (inline) return inline;
+      throw err;
+    });
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function formatCtTime(d) {
+    try {
+      var parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Chicago",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).formatToParts(d);
+      var map = {};
+      parts.forEach(function (p) { map[p.type] = p.value; });
+      return map.hour + ":" + map.minute + " " + map.dayPeriod + " CT";
+    } catch (e) {
+      return d.toLocaleTimeString();
+    }
+  }
+
+  function readingTimeShort(cur) {
+    if (cur && cur.time_ct) {
+      var dt = new Date(cur.time_ct);
+      if (!isNaN(dt.getTime())) return formatCtTime(dt);
+    }
+    var label = (cur && cur.time_label) || "";
+    var m = label.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+    if (m) return m[1].replace(/\s+/g, " ") + " CT";
+    return label;
   }
 
   function render(DATA) {
@@ -234,8 +308,12 @@ footer { color: var(--muted); font-size: .82rem; margin-top: 8px; }
   const fmtAcft = (n) => n == null ? "—" : Math.round(n).toLocaleString("en-US") + " ac-ft";
 
   const cur = DATA.current;
+  const checkedAt = formatCtTime(new Date());
+  const readingAt = readingTimeShort(cur);
   document.getElementById("elev").textContent = Number(cur.elevation_ft_msl).toFixed(2);
-  document.getElementById("when").textContent = cur.time_label + " · " + cur.site;
+  document.getElementById("when").innerHTML =
+    "Reading " + esc(readingAt) + " · checked " + esc(checkedAt) +
+    (cur.site ? '<span class="site">' + esc(cur.site) + "</span>" : "");
   document.getElementById("pct").innerHTML = "<span>% full</span> " + cur.percent_full + "%";
   document.getElementById("below").innerHTML = "<span>vs full (681)</span> " +
     (cur.below_full_ft > 0 ? cur.below_full_ft.toFixed(2) + " ft below" : Math.abs(cur.below_full_ft).toFixed(2) + " ft above");
@@ -262,11 +340,29 @@ footer { color: var(--muted); font-size: .82rem; margin-top: 8px; }
   });
   document.getElementById("change-note").textContent = (DATA.changes && DATA.changes.method) || "";
 
-  const f = DATA.forecast || {};
-  document.getElementById("forecast").innerHTML =
-    "<h2>LCRA forecast</h2><p>" + (f.text || "") + "</p><p>" + (f.situation || "") + "</p>" +
-    (f.gates ? "<p>" + f.gates.map(g => g.dam + ": " + g.status).join(". ") + ".</p>" : "") +
-    '<p class="asof">As of ' + (f.as_of_label || "") + ' · <a href="' + (f.source || "#") + '">lcra.org/water/flood</a></p>';
+  const note = DATA.lcra_note || DATA.forecast || {};
+  const sourceUrl = note.source || (DATA.forecast && DATA.forecast.source) || "https://www.lcra.org/water/flood/";
+  let noteHtml = "<h2>Latest from LCRA</h2>";
+  if (note.ok === false && note.error && !note.situation_text && !note.travis_forecast && !note.mansfield_gates) {
+    noteHtml += "<p>A current LCRA operations note could not be loaded from the flood operations page. Nothing is invented here.</p>";
+    if (note.error) noteHtml += '<p class="asof">' + esc(note.error) + "</p>";
+  } else {
+    if (note.situation_level) noteHtml += '<p class="note-level">' + esc(note.situation_level) + "</p>";
+    if (note.situation_text) noteHtml += '<p class="note-body">' + esc(note.situation_text) + "</p>";
+    if (note.situation_as_of) noteHtml += '<p class="asof">' + esc(note.situation_as_of) + "</p>";
+    if (note.travis_forecast) {
+      noteHtml += "<p>" + esc(note.travis_forecast) + "</p>";
+      if (note.travis_forecast_as_of) noteHtml += '<p class="asof">' + esc(note.travis_forecast_as_of) + "</p>";
+    } else if (DATA.forecast && DATA.forecast.text) {
+      noteHtml += "<p>" + esc(DATA.forecast.text) + "</p>";
+    }
+    if (note.mansfield_gates) {
+      noteHtml += "<p>Mansfield Dam / Lake Travis: " + esc(note.mansfield_gates) + "</p>";
+      if (note.mansfield_gates_as_of) noteHtml += '<p class="asof">' + esc(note.mansfield_gates_as_of) + "</p>";
+    }
+  }
+  noteHtml += '<p class="asof"><a href="' + esc(sourceUrl) + '">Source: lcra.org/water/flood</a></p>';
+  document.getElementById("forecast").innerHTML = noteHtml;
 
   document.getElementById("same-note").textContent = DATA.same_date_note || "";
   const sameT = document.querySelector("#same-date thead");
