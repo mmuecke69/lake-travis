@@ -1,0 +1,61 @@
+name: Refresh Lake Travis data
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+# Scheduled workflows can lag behind the cron interval when GitHub is busy.
+# This job scrapes LCRA/TWDB, rebuilds the dashboard, and commits the
+# published files only when the reading, LCRA note, or page shell changed.
+
+concurrency:
+  group: lake-travis-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scrape LCRA/TWDB and rebuild the site
+        run: |
+          python3 update.py
+          python3 build_site.py
+
+      - name: Copy published files to the Pages root
+        id: prepare
+        run: |
+          python3 .github/scripts/prepare_pages.py | tee /tmp/prepare.out
+          while IFS= read -r line; do
+            case "$line" in
+              DATA_CHANGED=*|HTML_CHANGED=*|SHOULD_COMMIT=*|ELEVATION=*|TIME_LABEL=*)
+                echo "$line" >> "$GITHUB_OUTPUT"
+                ;;
+            esac
+          done < /tmp/prepare.out
+
+      - name: Commit and push if something changed
+        if: steps.prepare.outputs.SHOULD_COMMIT == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- index.html data.json .nojekyll readings.csv
+          if git diff --cached --quiet; then
+            echo "Nothing to commit after staging."
+            exit 0
+          fi
+          MSG="Update Lake Travis dashboard to ${{ steps.prepare.outputs.ELEVATION }} ft msl (${{ steps.prepare.outputs.TIME_LABEL }})"
+          git commit -m "$MSG"
+          git pull --rebase origin main
+          git push origin HEAD:main

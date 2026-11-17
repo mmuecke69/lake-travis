@@ -1,0 +1,12 @@
+# Files used while the scrape runs in Actions or on the box.
+# The published site is index.html, data.json, and .nojekyll at the repo root.
+__pycache__/
+*.pyc
+.DS_Store
+raw/
+current.json
+page_data.json
+site/
+.publish-state.json
+.publish-state.json
+targets/__pycache__/
