@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Lake Travis level — Point Venture</title>
+<meta name="description" content="Current Lake Travis elevation at Mansfield Dam, with trends, typical seasonal levels, and this year's sharp rises. Built from published LCRA and TWDB data.">
+<meta name="lake-travis-data-url" content="data.json">
+<style>
+:root {
+  --bg: #f3efe6;
+  --card: #ffffff;
+  --ink: #1a2332;
+  --heading: var(--ink);
+  --muted: #5b6573;
+  --line: #e2ddd3;
+  --lake: #0b5f8a;
+  --lake-soft: rgba(11,95,138,.14);
+  --up: #157a45;
+  --down: #b42318;
+  --warn: #8a5800;
+  --band: rgba(11,95,138,.16);
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(26,35,50,.06), 0 8px 24px rgba(26,35,50,.06);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.45;
+  padding: 16px 16px 48px;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+header h1 { font-size: 1.35rem; margin: 0 0 2px; letter-spacing: -0.02em; color: var(--heading); }
+header .sub { color: var(--muted); font-size: .92rem; margin: 0 0 16px; }
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  margin: 0 0 14px;
+}
+.level {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px;
+}
+.level .num {
+  font-size: 3.1rem; font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+  color: var(--lake);
+}
+.level .unit { font-size: 1.05rem; color: var(--muted); font-weight: 600; }
+.meta { color: var(--muted); font-size: .92rem; margin-top: 6px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.pill {
+  background: #f3f7fa; border-radius: 999px; padding: 6px 12px;
+  font-size: .9rem; font-weight: 600;
+}
+.pill span { color: var(--muted); font-weight: 500; }
+.changes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (min-width: 560px) { .changes { grid-template-columns: repeat(4, 1fr); } }
+.chg { background: #f7f5f0; border-radius: 12px; padding: 10px 12px; }
+.chg .k { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.chg .v { font-size: 1.25rem; font-weight: 700; }
+.up { color: var(--up); }
+.down { color: var(--down); }
+.flat { color: var(--ink); }
+.callout { border-left: 4px solid var(--lake); padding: 2px 0 2px 12px; }
+.callout p { margin: 0 0 6px; }
+.callout .asof { color: var(--muted); font-size: .85rem; }
+h2 { font-size: 1.15rem; margin: 0 0 10px; letter-spacing: -0.02em; }
+h3 { font-size: 1.02rem; margin: 16px 0 8px; }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.toggles button {
+  appearance: none; border: 1px solid var(--line); background: #fff;
+  border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .88rem;
+  font-weight: 600; color: var(--ink); cursor: pointer;
+}
+.toggles button[aria-pressed="true"] {
+  background: var(--lake); color: #fff; border-color: var(--lake);
+}
+.chart-box { position: relative; height: 260px; }
+.legend-note { color: var(--muted); font-size: .82rem; margin: 8px 0 0; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.this td { font-weight: 700; background: var(--lake-soft); }
+.rise { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.rise:first-of-type { border-top: 0; margin-top: 0; padding-top: 0; }
+.rise h3 { margin: 0 0 6px; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin: 8px 0; font-size: .92rem; }
+@media (min-width: 560px) { .stats { grid-template-columns: 1fr 1fr 1fr; } }
+.stats b { font-variant-numeric: tabular-nums; }
+.sources, .caveats { font-size: .88rem; color: var(--ink); }
+.sources a { color: var(--lake); }
+.caveats li, .sources li { margin: 0 0 6px; }
+footer { color: var(--muted); font-size: .82rem; margin-top: 8px; }
+.credit {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin: 8px 0 16px;
+  padding: 8px 14px;
+  background: var(--lake);
+  border-radius: 14px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="credit">Made by Mike Muecke, using Grokbot</p>
+  <header>
+    <h1>Lake Travis level</h1>
+    <p class="sub">Mansfield Dam · Point Venture, Texas</p>
+  </header>
+
+  <section class="card" id="current">
+    <div class="level">
+      <div class="num" id="elev">—</div>
+      <div class="unit">ft msl</div>
+    </div>
+    <div class="meta" id="when"></div>
+    <div class="pills">
+      <div class="pill" id="pct"></div>
+      <div class="pill" id="below"></div>
+      <div class="pill" id="storage"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Change</h2>
+    <div class="changes" id="changes"></div>
+    <p class="legend-note" id="change-note"></p>
+  </section>
+
+  <section class="card callout" id="forecast"></section>
+
+  <section class="card">
+    <h2>Trend</h2>
+    <div class="toggles" id="range-toggles" role="tablist" aria-label="Chart range">
+      <button type="button" data-range="30d">30 days</button>
+      <button type="button" data-range="90d">90 days</button>
+      <button type="button" data-range="1y" aria-pressed="true">1 year</button>
+      <button type="button" data-range="5y">5 years</button>
+      <button type="button" data-range="all">All</button>
+    </div>
+    <div class="chart-box"><canvas id="trend"></canvas></div>
+    <p class="legend-note" id="trend-note">Blue line is the lake. Dashed teal is the typical level for that date (1943–present monthly climatology as a day-of-year curve). Shaded band is the 10th–90th percentile. Horizontal lines mark full pool (681), a 700 ft reference in the flood pool, the official record high (710.44), and the spillway / top of flood (714) when they fall in view.</p>
+  </section>
+
+  <section class="card">
+    <h2>This year vs. prior years</h2>
+    <div class="chart-box" style="height:280px"><canvas id="overlay"></canvas></div>
+    <p class="legend-note">Each faint line is a prior year (2016–2025) by day of year. The heavy blue line is 2026. The dashed teal line and shaded band are the long-term typical curve and 10th–90th percentile range, starting in 1943.</p>
+  </section>
+
+  <section class="card">
+    <h2>Same date in prior years</h2>
+    <p class="legend-note" id="same-note"></p>
+    <div class="table-wrap"><table id="same-date"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Typical level by month</h2>
+    <p class="legend-note" id="clim-note"></p>
+    <div class="table-wrap"><table id="monthly"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card" id="rises">
+    <h2>This year’s big rises</h2>
+    <p class="legend-note" id="rises-note"></p>
+    <div id="rise-list"></div>
+    <h3>How this year compares</h3>
+    <p class="legend-note" id="hist-note"></p>
+    <div class="table-wrap"><table id="hist"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Official reference levels</h2>
+    <div class="table-wrap"><table id="thresholds"><tbody></tbody></table></div>
+    <p class="legend-note" id="fs-note"></p>
+  </section>
+
+  <section class="card">
+    <h2>Sources</h2>
+    <ul class="sources" id="sources"></ul>
+    <h3>Caveats</h3>
+    <ul class="caveats" id="caveats"></ul>
+  </section>
+
+  <footer>
+    Snapshot built from published LCRA and TWDB data. Opens in any browser; no sign-in required.
+  </footer>
+</div>
+
+<script id="data" type="application/json"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  function dataUrl() {
+    if (window.LAKE_TRAVIS_DATA_URL) return window.LAKE_TRAVIS_DATA_URL;
+    const q = new URLSearchParams(location.search).get("data");
+    if (q) return q;
+    const meta = document.querySelector('meta[name="lake-travis-data-url"]');
+    if (meta && meta.content) return meta.content;
+    return "data.json";
+  }
+
+  function loadData() {
+    const inline = document.getElementById("data");
+    if (inline && inline.textContent.trim()) {
+      return Promise.resolve(JSON.parse(inline.textContent));
+    }
+    return fetch(dataUrl(), { cache: "no-store" }).then(function (res) {
+      if (!res.ok) throw new Error("Could not load " + dataUrl() + " (" + res.status + ")");
+      return res.json();
+    });
+  }
+
+  function render(DATA) {
+  const fmtFt = (n, digits=2) => (n == null ? "—" : Number(n).toFixed(digits) + " ft");
+  const fmtChg = (n) => {
+    if (n == null || Number.isNaN(n)) return { text: "—", cls: "flat" };
+    const v = Number(n);
+    const sign = v > 0 ? "+" : "";
+    const cls = v > 0.005 ? "up" : (v < -0.005 ? "down" : "flat");
+    return { text: sign + v.toFixed(2) + " ft", cls };
+  };
+  const fmtAcft = (n) => n == null ? "—" : Math.round(n).toLocaleString("en-US") + " ac-ft";
+
+  const cur = DATA.current;
+  document.getElementById("elev").textContent = Number(cur.elevation_ft_msl).toFixed(2);
+  document.getElementById("when").textContent = cur.time_label + " · " + cur.site;
+  document.getElementById("pct").innerHTML = "<span>% full</span> " + cur.percent_full + "%";
+  document.getElementById("below").innerHTML = "<span>vs full (681)</span> " +
+    (cur.below_full_ft > 0 ? cur.below_full_ft.toFixed(2) + " ft below" : Math.abs(cur.below_full_ft).toFixed(2) + " ft above");
+  document.getElementById("storage").innerHTML = "<span>storage</span> " + fmtAcft(cur.storage_acft);
+
+  const chgMap = [
+    ["vs yesterday", DATA.changes && DATA.changes.vs_1d],
+    ["vs 7 days", DATA.changes && DATA.changes.vs_7d],
+    ["vs 30 days", DATA.changes && DATA.changes.vs_30d],
+    ["since midnight", DATA.changes && DATA.changes.since_midnight && {
+      change_ft: DATA.changes.since_midnight.change_ft,
+      then_time_label: "midnight CT (" + Number(DATA.changes.since_midnight.midnight_ft_msl).toFixed(2) + " ft)"
+    }],
+  ];
+  const chgEl = document.getElementById("changes");
+  chgMap.forEach(([label, c]) => {
+    const d = document.createElement("div");
+    d.className = "chg";
+    const ch = fmtChg(c && c.change_ft);
+    d.innerHTML = '<div class="k">' + label + '</div><div class="v ' + ch.cls + '">' + ch.text + '</div>' +
+      (c && c.then_time_label ? '<div class="k">' + c.then_time_label + '</div>' : '') +
+      (c && c.then_elevation_ft_msl != null ? '<div class="k">from ' + Number(c.then_elevation_ft_msl).toFixed(2) + ' ft</div>' : '');
+    chgEl.appendChild(d);
+  });
+  document.getElementById("change-note").textContent = (DATA.changes && DATA.changes.method) || "";
+
+  const f = DATA.forecast || {};
+  document.getElementById("forecast").innerHTML =
+    "<h2>LCRA forecast</h2><p>" + (f.text || "") + "</p><p>" + (f.situation || "") + "</p>" +
+    (f.gates ? "<p>" + f.gates.map(g => g.dam + ": " + g.status).join(". ") + ".</p>" : "") +
+    '<p class="asof">As of ' + (f.as_of_label || "") + ' · <a href="' + (f.source || "#") + '">lcra.org/water/flood</a></p>';
+
+  document.getElementById("same-note").textContent = DATA.same_date_note || "";
+  const sameT = document.querySelector("#same-date thead");
+  const sameB = document.querySelector("#same-date tbody");
+  sameT.innerHTML = "<tr><th>Year</th><th class='num'>Elevation</th><th class='num'>% full (TWDB)</th></tr>";
+  (DATA.same_date || []).slice().reverse().forEach(r => {
+    const tr = document.createElement("tr");
+    if (r.is_this_year) tr.className = "this";
+    tr.innerHTML = "<td>" + r.year + (r.is_this_year ? " (TWDB daily avg)" : "") + "</td>" +
+      "<td class='num'>" + Number(r.elevation_ft_msl).toFixed(2) + " ft</td>" +
+      "<td class='num'>" + (r.percent_full == null ? "—" : Number(r.percent_full).toFixed(1) + "%") + "</td>";
+    sameB.appendChild(tr);
+  });
+
+  const clim = DATA.climatology;
+  document.getElementById("clim-note").textContent =
+    "Highest typical month: " + clim.highest_month + " (mean " + clim.highest_mean.toFixed(2) +
+    " ft). Lowest: " + clim.lowest_month + " (mean " + clim.lowest_mean.toFixed(2) + " ft). " + clim.note;
+  const mh = document.querySelector("#monthly thead");
+  const mb = document.querySelector("#monthly tbody");
+  mh.innerHTML = "<tr><th>Month</th><th class='num'>Mean</th><th class='num'>Median</th><th class='num'>10th</th><th class='num'>90th</th><th class='num'>2026</th></tr>";
+  clim.monthly.forEach(m => {
+    const y = clim.year_2026[m.month] || clim.year_2026[String(m.month)];
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + m.name + "</td>" +
+      "<td class='num'>" + m.mean.toFixed(2) + "</td>" +
+      "<td class='num'>" + m.median.toFixed(2) + "</td>" +
+      "<td class='num'>" + m.p10.toFixed(2) + "</td>" +
+      "<td class='num'>" + m.p90.toFixed(2) + "</td>" +
+      "<td class='num'>" + (y ? y.mean.toFixed(2) + (y.n < 28 ? "*" : "") : "—") + "</td>";
+    mb.appendChild(tr);
+  });
+
+  document.getElementById("rises-note").textContent = DATA.rises_note || "";
+  const list = document.getElementById("rise-list");
+  (DATA.rises_2026 || []).forEach(ev => {
+    const div = document.createElement("article");
+    div.className = "rise";
+    const p24 = ev.peak_24h;
+    const src = (ev.sources || []).map(s => '<a href="'+s.url+'">'+s.name+'</a>').join("; ");
+    div.innerHTML = "<h3>" + ev.title + "</h3><p>" + ev.lead + "</p>" +
+      '<div class="stats">' +
+      "<div>Start<br><b>" + ev.start_label + "</b><br>" + ev.start_ft.toFixed(2) + " ft</div>" +
+      "<div>" + (ev.ongoing ? "Latest" : "End / crest") + "<br><b>" + ev.end_label + "</b><br>" + ev.end_ft.toFixed(2) + " ft</div>" +
+      "<div>Rise<br><b>+" + ev.rise_ft.toFixed(2) + " ft</b><br>in " + ev.days.toFixed(2) + " days (" + ev.rate_ft_per_day.toFixed(2) + " ft/day)</div>" +
+      (p24 ? "<div>Peak 24-hour rise<br><b>+" + p24.ft.toFixed(2) + " ft</b><br>" + p24.start_label + " (" + p24.start_ft.toFixed(2) + ") → " + p24.end_label + " (" + p24.end_ft.toFixed(2) + ")</div>" : "") +
+      "</div><p>" + ev.attribution + "</p><p class='legend-note'>Source of levels: " + ev.series_source + ". " + src + "</p>";
+    list.appendChild(div);
+  });
+
+  document.getElementById("hist-note").textContent = DATA.historical_note || "";
+  const hh = document.querySelector("#hist thead");
+  const hb = document.querySelector("#hist tbody");
+  hh.innerHTML = "<tr><th>Event</th><th class='num'>Start</th><th class='num'>End</th><th class='num'>Rise</th><th class='num'>Peak 24h (daily)</th></tr>";
+  const july = (DATA.rises_2026 || []).find(e => e.id === "july");
+  const histRows = [];
+  if (july) {
+    histRows.push({
+      title: "July 16–19, 2026 (this year)",
+      start: july.start_ft.toFixed(2) + " ft",
+      end: july.end_ft.toFixed(2) + " ft",
+      rise: "+" + july.rise_ft.toFixed(2) + " ft in " + july.days.toFixed(2) + " days",
+      peak: july.peak_24h ? "+" + july.peak_24h.ft.toFixed(2) + " ft (5-min)" : "—",
+      note: "LCRA 5-minute series. Smaller than the July 2025, October 2018, and December 1991 rises, but it did enter the flood pool."
+    });
+  }
+  (DATA.historical_rises || []).forEach(h => {
+    histRows.push({
+      title: h.title,
+      start: h.start_ft.toFixed(2) + " ft (" + h.start + ")",
+      end: h.end_ft.toFixed(2) + " ft (" + h.end + ")",
+      rise: "+" + h.rise_ft.toFixed(2) + " ft in " + h.days + " days",
+      peak: "+" + h.peak_24h_ft.toFixed(2) + " ft on " + h.peak_24h_date,
+      note: h.note
+    });
+  });
+  histRows.forEach((r, i) => {
+    const tr = document.createElement("tr");
+    if (i === 0) tr.className = "this";
+    tr.innerHTML = "<td><strong>" + r.title + "</strong><div class='legend-note'>" + r.note + "</div></td>" +
+      "<td class='num'>" + r.start + "</td><td class='num'>" + r.end + "</td>" +
+      "<td class='num'>" + r.rise + "</td><td class='num'>" + r.peak + "</td>";
+    hb.appendChild(tr);
+  });
+
+  const th = DATA.thresholds || {};
+  const tb = document.querySelector("#thresholds tbody");
+  const rows = [
+    ["Conservation / full pool (water supply)", th.full_pool_ft_msl, "LCRA / USACE"],
+    ["700 ft reference (in the flood pool, not official flood stage)", 700, "Requested reference line"],
+    ["Official record high (daily 8 a.m.)", th.record_high_ft_msl, "Dec 25, 1991 · LCRA"],
+    ["Overflow spillway / top of flood pool", th.spillway_crest_ft_msl, "LCRA / USACE"],
+    ["Official record low (daily 8 a.m.)", th.record_low_ft_msl, "Aug 14, 1951 · LCRA"],
+  ];
+  rows.forEach(([n, v, s]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + n + "</td><td class='num'>" + (v != null ? Number(v).toFixed(2) + " ft" : "—") + "</td><td>" + s + "</td>";
+    tb.appendChild(tr);
+  });
+  document.getElementById("fs-note").textContent = DATA.flood_stage_note || "";
+
+  const src = document.getElementById("sources");
+  (DATA.sources || []).forEach(s => {
+    const li = document.createElement("li");
+    li.innerHTML = '<a href="'+s.url+'">'+s.name+'</a>';
+    src.appendChild(li);
+  });
+  const cav = document.getElementById("caveats");
+  (DATA.caveats || []).forEach(t => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    cav.appendChild(li);
+  });
+
+  // ---- charts ----
+  const doyMap = {};
+  (clim.doy || []).forEach(p => { doyMap[p.md] = p; });
+  function mdFromISO(iso) {
+    const d = iso.slice(5, 10);
+    return d === "02-29" ? "02-28" : d;
+  }
+  function climForSeries(pts) {
+    const mean = [], p10 = [], p90 = [];
+    pts.forEach(p => {
+      const c = doyMap[mdFromISO(p.d)];
+      mean.push(c && c.mean != null ? c.mean : null);
+      p10.push(c && c.p10 != null ? c.p10 : null);
+      p90.push(c && c.p90 != null ? c.p90 : null);
+    });
+    return { mean, p10, p90 };
+  }
+
+  const refs = [
+    { y: 681, label: "Full pool 681", color: "#8a5800", dash: [6,4] },
+    { y: 700, label: "700 ft reference", color: "#9a3412", dash: [2,4] },
+    { y: 710.44, label: "Record high 710.44", color: "#7c3aed", dash: [8,4] },
+    { y: 714, label: "Spillway 714", color: "#b42318", dash: [10,4] },
+    { y: 614.18, label: "Record low 614.18", color: "#57534e", dash: [4,4] },
+  ];
+
+  let trendChart;
+  function showRange(key) {
+    const pts = DATA.series[key] || [];
+    const labels = pts.map(p => p.d);
+    const elev = pts.map(p => p.e);
+    const useClim = key === "30d" || key === "90d" || key === "1y";
+    const cl = useClim ? climForSeries(pts) : null;
+    const ymin0 = Math.min(...elev);
+    const ymax0 = Math.max(...elev);
+    let pad = Math.max(1.5, (ymax0 - ymin0) * 0.12);
+    let ymin = ymin0 - pad, ymax = ymax0 + pad;
+    // If full pool is nearby, include it.
+    if (681 >= ymin - 8 && 681 <= ymax + 8) {
+      ymin = Math.min(ymin, 681 - 1);
+      ymax = Math.max(ymax, 681 + 1);
+    }
+    const datasets = [];
+    if (cl) {
+      datasets.push({
+        label: "90th percentile",
+        data: cl.p90, borderWidth: 0, pointRadius: 0, fill: "+1",
+        backgroundColor: "rgba(11,95,138,.16)", order: 3
+      });
+      datasets.push({
+        label: "10th percentile",
+        data: cl.p10, borderWidth: 0, pointRadius: 0, fill: false, order: 3
+      });
+      datasets.push({
+        label: "Typical (mean)",
+        data: cl.mean, borderColor: "#0e7490", borderWidth: 1.5,
+        borderDash: [5,4], pointRadius: 0, fill: false, order: 2
+      });
+    }
+    datasets.push({
+      label: "Lake level",
+      data: elev, borderColor: "#0b5f8a", backgroundColor: "#0b5f8a",
+      borderWidth: 2.25, pointRadius: 0, tension: 0.15, fill: false, order: 1
+    });
+    refs.forEach(r => {
+      if (r.y < ymin || r.y > ymax) return;
+      datasets.push({
+        label: r.label,
+        data: labels.map(() => r.y),
+        borderColor: r.color, borderWidth: 1, borderDash: r.dash,
+        pointRadius: 0, fill: false, order: 4
+      });
+    });
+
+    const cfg = {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: (items) => items[0] ? items[0].label : "",
+              label: (ctx) => ctx.dataset.label + ": " + (ctx.parsed.y != null ? ctx.parsed.y.toFixed(2) + " ft" : "—")
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              maxRotation: 0, autoSkip: true, maxTicksLimit: 7,
+              callback: function(v) {
+                const s = this.getLabelForValue(v);
+                return s ? s.slice(0, 10) : "";
+              }
+            },
+            grid: { display: false }
+          },
+          y: {
+            min: Math.floor(ymin * 2) / 2,
+            max: Math.ceil(ymax * 2) / 2,
+            ticks: { callback: (v) => v.toFixed(0) },
+            title: { display: true, text: "ft msl" }
+          }
+        }
+      }
+    };
+    if (trendChart) trendChart.destroy();
+    trendChart = new Chart(document.getElementById("trend"), cfg);
+  }
+
+  document.querySelectorAll("#range-toggles button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#range-toggles button").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      showRange(btn.getAttribute("data-range"));
+    });
+  });
+  showRange("1y");
+
+  // Overlay chart
+  const ov = DATA.overlay;
+  const oLabels = ov.labels;
+  const oSets = [];
+  oSets.push({
+    label: "90th percentile",
+    data: oLabels.map(md => doyMap[md] && doyMap[md].p90),
+    borderWidth: 0, pointRadius: 0, fill: "+1",
+    backgroundColor: "rgba(11,95,138,.16)", order: 4
+  });
+  oSets.push({
+    label: "10th percentile",
+    data: oLabels.map(md => doyMap[md] && doyMap[md].p10),
+    borderWidth: 0, pointRadius: 0, fill: false, order: 4
+  });
+  oSets.push({
+    label: "Typical (mean)",
+    data: oLabels.map(md => doyMap[md] && doyMap[md].mean),
+    borderColor: "#0e7490", borderWidth: 1.5, borderDash: [5,4],
+    pointRadius: 0, fill: false, order: 3
+  });
+  Object.keys(ov.prior_years).sort().forEach(y => {
+    oSets.push({
+      label: y, data: ov.prior_years[y],
+      borderColor: "rgba(26,35,50,.18)", borderWidth: 1,
+      pointRadius: 0, fill: false, tension: 0.1, order: 2
+    });
+  });
+  oSets.push({
+    label: ov.this_year_label,
+    data: ov.this_year,
+    borderColor: "#0b5f8a", borderWidth: 2.4,
+    pointRadius: 0, fill: false, tension: 0.1, order: 1
+  });
+  new Chart(document.getElementById("overlay"), {
+    type: "line",
+    data: { labels: oLabels, datasets: oSets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          filter: (c) => c.dataset.label === ov.this_year_label || c.dataset.label === "Typical (mean)" || /^\d{4}$/.test(c.dataset.label),
+          callbacks: {
+            title: (items) => items[0] ? items[0].label : "",
+            label: (ctx) => ctx.dataset.label + ": " + (ctx.parsed.y != null ? ctx.parsed.y.toFixed(2) + " ft" : "—")
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            maxRotation: 0, autoSkip: true, maxTicksLimit: 12,
+            callback: function(v) {
+              const s = this.getLabelForValue(v) || "";
+              return s.endsWith("-01") ? s.slice(0, 2) : "";
+            }
+          },
+          grid: { display: false }
+        },
+        y: { title: { display: true, text: "ft msl" }, ticks: { callback: (v) => v.toFixed(0) } }
+      }
+    }
+  });
+  }
+
+  loadData().then(render).catch(function (err) {
+    const el = document.getElementById("when");
+    if (el) el.textContent = "Could not load lake data. " + (err && err.message ? err.message : err);
+  });
+})();
+</script>
+</body>
+</html>
