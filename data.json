@@ -1,42 +1,42 @@
 {
-  "generated_at_ct": "2026-11-18T17:15:14.833907-06:00",
+  "generated_at_ct": "2026-11-18T22:22:03.879793-06:00",
   "current": {
-    "elevation_ft_msl": 681.6,
-    "time_ct": "2026-11-18T17:15:02-06:00",
-    "time_label": "Nov 18, 2026, 5:15 PM CST",
+    "elevation_ft_msl": 681.64,
+    "time_ct": "2026-11-18T22:20:01-06:00",
+    "time_label": "Nov 18, 2026, 10:20 PM CST",
     "percent_full": 101.0,
-    "storage_acft": 1126737.0,
-    "below_full_ft": -0.6,
+    "storage_acft": 1127313.0,
+    "below_full_ft": -0.64,
     "site": "Mansfield Dam (LCRA site 3963)"
   },
   "changes": {
     "vs_1d": {
       "days": 1,
-      "then_elevation_ft_msl": 681.6,
-      "then_time_ct": "2026-11-17T17:15:02-06:00",
-      "then_time_label": "Nov 17, 2026, 5:15 PM CST",
+      "then_elevation_ft_msl": 681.63,
+      "then_time_ct": "2026-11-17T22:20:01-06:00",
+      "then_time_label": "Nov 17, 2026, 10:20 PM CST",
       "offset_minutes": 0.0,
-      "change_ft": 0.0
+      "change_ft": 0.01
     },
     "vs_7d": {
       "days": 7,
-      "then_elevation_ft_msl": 681.04,
-      "then_time_ct": "2026-11-11T17:15:01-06:00",
-      "then_time_label": "Nov 11, 2026, 5:15 PM CST",
+      "then_elevation_ft_msl": 681.22,
+      "then_time_ct": "2026-11-11T22:20:01-06:00",
+      "then_time_label": "Nov 11, 2026, 10:20 PM CST",
       "offset_minutes": 0.0,
-      "change_ft": 0.56
+      "change_ft": 0.42
     },
     "vs_30d": {
       "days": 30,
-      "then_elevation_ft_msl": 677.53,
-      "then_time_ct": "2026-10-19T18:15:01-05:00",
-      "then_time_label": "Oct 19, 2026, 6:15 PM CDT",
+      "then_elevation_ft_msl": 677.58,
+      "then_time_ct": "2026-10-19T23:20:01-05:00",
+      "then_time_label": "Oct 19, 2026, 11:20 PM CDT",
       "offset_minutes": 0.0,
-      "change_ft": 4.07
+      "change_ft": 4.06
     },
     "since_midnight": {
       "midnight_ft_msl": 681.67,
-      "change_ft": -0.07
+      "change_ft": -0.03
     },
     "method": "Same-time-of-day comparison from LCRA Hydromet 5-minute readings at Mansfield Dam, not the midnight values in LakeLevelsRR.csv."
   },
@@ -44,54 +44,54 @@
     "ok": true,
     "source": "https://www.lcra.org/water/flood/",
     "source_label": "lcra.org/water/flood",
-    "fetched_at_ct": "2026-11-18T17:15:15.259505-06:00",
+    "fetched_at_ct": "2026-11-18T22:22:04.285573-06:00",
     "situation_as_of": "as of 11/11/2026 6:49 pm",
     "situation_level": "Increased Awareness",
     "situation_text": "Floodgates at Wirtz and Starcke dams are now closed, and no floodgate operations are underway. LCRA continues to release storm runoff through hydroelectric generation at one or more Highland Lakes dams.\n\nWith more rain forecast this weekend, conditions remain dynamic, and LCRA may need to open floodgates in the coming days.",
-    "travis_forecast_as_of": "as of 11/18/26 at 5:00 PM",
+    "travis_forecast_as_of": "as of 11/18/26 at 10:15 PM",
     "travis_forecast": "Expected elevation range is 681 - 682 ft msl over the next 24 to 48 hours.",
     "mansfield_gates": "No gate operations to pass floodwaters are expected",
-    "mansfield_gates_as_of": "as of 11/18/26 at 5:00 PM",
+    "mansfield_gates_as_of": "as of 11/18/26 at 10:15 PM",
     "gates": [
       {
         "dam": "Buchanan Dam / Lake Buchanan",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Inks Dam / Inks Lake",
         "status": "Flow over the spillway is not expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Wirtz Dam / Lake LBJ",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Starcke Dam / Lake Marble Falls",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Mansfield Dam / Lake Travis",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Tom Miller Dam / Lake Austin",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Bastrop Dam / Lake Bastrop",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 4:55 PM"
+        "as_of": "as of 11/18/26 at 10:10 PM"
       }
     ]
   },
   "forecast": {
-    "as_of_label": "as of 11/18/26 at 5:00 PM",
+    "as_of_label": "as of 11/18/26 at 10:15 PM",
     "text": "Expected elevation range is 681 - 682 ft msl over the next 24 to 48 hours.",
     "situation": "Floodgates at Wirtz and Starcke dams are now closed, and no floodgate operations are underway. LCRA continues to release storm runoff through hydroelectric generation at one or more Highland Lakes dams.\n\nWith more rain forecast this weekend, conditions remain dynamic, and LCRA may need to open floodgates in the coming days.",
     "situation_level": "Increased Awareness",
@@ -100,37 +100,37 @@
       {
         "dam": "Buchanan Dam / Lake Buchanan",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Inks Dam / Inks Lake",
         "status": "Flow over the spillway is not expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Wirtz Dam / Lake LBJ",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Starcke Dam / Lake Marble Falls",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Mansfield Dam / Lake Travis",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Tom Miller Dam / Lake Austin",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 5:00 PM"
+        "as_of": "as of 11/18/26 at 10:15 PM"
       },
       {
         "dam": "Bastrop Dam / Lake Bastrop",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/18/26 at 4:55 PM"
+        "as_of": "as of 11/18/26 at 10:10 PM"
       }
     ],
     "source": "https://www.lcra.org/water/flood/",
@@ -3420,7 +3420,7 @@
       },
       {
         "d": "2026-11-18",
-        "e": 681.7
+        "e": 681.67
       }
     ],
     "90d": [
@@ -3782,7 +3782,7 @@
       },
       {
         "d": "2026-11-18",
-        "e": 681.7
+        "e": 681.67
       }
     ],
     "1y": [
@@ -5244,7 +5244,7 @@
       },
       {
         "d": "2026-11-18",
-        "e": 681.7
+        "e": 681.67
       }
     ],
     "5y": [
@@ -12550,7 +12550,7 @@
       },
       {
         "d": "2026-11-18",
-        "e": 681.7
+        "e": 681.67
       }
     ],
     "all": [
@@ -17318,7 +17318,7 @@
       681.48,
       681.59,
       681.66,
-      681.7,
+      681.67,
       null,
       null,
       null,
@@ -21111,12 +21111,12 @@
     {
       "date": "2026-11-18",
       "year": 2026,
-      "elevation_ft_msl": 681.7,
+      "elevation_ft_msl": 681.67,
       "percent_full": 100.0,
       "is_this_year": true
     }
   ],
-  "same_date_note": "TWDB daily average elevation on November 18 of each year. Today's live LCRA reading is 681.60 ft; the TWDB figure for today is a daily average and may differ, especially while the lake is rising or falling quickly.",
+  "same_date_note": "TWDB daily average elevation on November 18 of each year. Today's live LCRA reading is 681.64 ft; the TWDB figure for today is a daily average and may differ, especially while the lake is rising or falling quickly.",
   "rises_2026": [
     {
       "id": "november",
@@ -21139,12 +21139,12 @@
       "start_time": "2026-11-09T16:20:01-06:00",
       "start_label": "Nov 9, 2026, 4:20 PM CST",
       "start_ft": 677.35,
-      "end_time": "2026-11-18T17:15:02-06:00",
-      "end_label": "Nov 18, 2026, 5:15 PM CST",
-      "end_ft": 681.6,
-      "rise_ft": 4.25,
-      "days": 9.04,
-      "rate_ft_per_day": 0.47,
+      "end_time": "2026-11-18T22:20:01-06:00",
+      "end_label": "Nov 18, 2026, 10:20 PM CST",
+      "end_ft": 681.64,
+      "rise_ft": 4.29,
+      "days": 9.25,
+      "rate_ft_per_day": 0.46,
       "peak_24h": {
         "ft": 2.77,
         "start_time": "2026-11-10T10:40:10-06:00",
