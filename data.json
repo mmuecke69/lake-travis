@@ -1,42 +1,42 @@
 {
-  "generated_at_ct": "2026-11-21T01:42:23.897218-06:00",
+  "generated_at_ct": "2026-11-21T06:42:19.866130-06:00",
   "current": {
-    "elevation_ft_msl": 681.35,
-    "time_ct": "2026-11-21T01:40:08-06:00",
-    "time_label": "Nov 21, 2026, 1:40 AM CST",
+    "elevation_ft_msl": 681.31,
+    "time_ct": "2026-11-21T06:40:09-06:00",
+    "time_label": "Nov 21, 2026, 6:40 AM CST",
     "percent_full": 101.0,
-    "storage_acft": 1122139.0,
-    "below_full_ft": -0.35,
+    "storage_acft": 1120991.0,
+    "below_full_ft": -0.31,
     "site": "Mansfield Dam (LCRA site 3963)"
   },
   "changes": {
     "vs_1d": {
       "days": 1,
-      "then_elevation_ft_msl": 681.48,
-      "then_time_ct": "2026-11-20T01:40:08-06:00",
-      "then_time_label": "Nov 20, 2026, 1:40 AM CST",
+      "then_elevation_ft_msl": 681.43,
+      "then_time_ct": "2026-11-20T06:40:08-06:00",
+      "then_time_label": "Nov 20, 2026, 6:40 AM CST",
       "offset_minutes": 0.0,
-      "change_ft": -0.13
+      "change_ft": -0.12
     },
     "vs_7d": {
       "days": 7,
-      "then_elevation_ft_msl": 681.52,
-      "then_time_ct": "2026-11-14T01:40:06-06:00",
-      "then_time_label": "Nov 14, 2026, 1:40 AM CST",
+      "then_elevation_ft_msl": 681.44,
+      "then_time_ct": "2026-11-14T06:40:07-06:00",
+      "then_time_label": "Nov 14, 2026, 6:40 AM CST",
       "offset_minutes": 0.0,
-      "change_ft": -0.17
+      "change_ft": -0.13
     },
     "vs_30d": {
       "days": 30,
-      "then_elevation_ft_msl": 677.5,
-      "then_time_ct": "2026-10-22T02:40:10-05:00",
-      "then_time_label": "Oct 22, 2026, 2:40 AM CDT",
+      "then_elevation_ft_msl": 677.48,
+      "then_time_ct": "2026-10-22T07:40:07-05:00",
+      "then_time_label": "Oct 22, 2026, 7:40 AM CDT",
       "offset_minutes": 0.0,
-      "change_ft": 3.85
+      "change_ft": 3.83
     },
     "since_midnight": {
       "midnight_ft_msl": 681.38,
-      "change_ft": -0.03
+      "change_ft": -0.07
     },
     "method": "Same-time-of-day comparison from LCRA Hydromet 5-minute readings at Mansfield Dam, not the midnight values in LakeLevelsRR.csv."
   },
@@ -44,54 +44,54 @@
     "ok": true,
     "source": "https://www.lcra.org/water/flood/",
     "source_label": "lcra.org/water/flood",
-    "fetched_at_ct": "2026-11-21T01:42:24.245909-06:00",
+    "fetched_at_ct": "2026-11-21T06:42:20.102483-06:00",
     "situation_as_of": "as of 11/11/2026 6:49 pm",
     "situation_level": "Increased Awareness",
     "situation_text": "Floodgates at Wirtz and Starcke dams are now closed, and no floodgate operations are underway. LCRA continues to release storm runoff through hydroelectric generation at one or more Highland Lakes dams.\n\nWith more rain forecast this weekend, conditions remain dynamic, and LCRA may need to open floodgates in the coming days.",
-    "travis_forecast_as_of": "as of 11/21/26 at 1:20 AM",
+    "travis_forecast_as_of": "as of 11/21/26 at 6:20 AM",
     "travis_forecast": "Expected elevation range is 681 - 682 ft msl over the next 24 to 48 hours.",
     "mansfield_gates": "No gate operations to pass floodwaters are expected",
-    "mansfield_gates_as_of": "as of 11/21/26 at 1:20 AM",
+    "mansfield_gates_as_of": "as of 11/21/26 at 6:20 AM",
     "gates": [
       {
         "dam": "Buchanan Dam / Lake Buchanan",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Inks Dam / Inks Lake",
         "status": "Flow over the spillway is not expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Wirtz Dam / Lake LBJ",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Starcke Dam / Lake Marble Falls",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Mansfield Dam / Lake Travis",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Tom Miller Dam / Lake Austin",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Bastrop Dam / Lake Bastrop",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:10 AM"
+        "as_of": "as of 11/21/26 at 6:10 AM"
       }
     ]
   },
   "forecast": {
-    "as_of_label": "as of 11/21/26 at 1:20 AM",
+    "as_of_label": "as of 11/21/26 at 6:20 AM",
     "text": "Expected elevation range is 681 - 682 ft msl over the next 24 to 48 hours.",
     "situation": "Floodgates at Wirtz and Starcke dams are now closed, and no floodgate operations are underway. LCRA continues to release storm runoff through hydroelectric generation at one or more Highland Lakes dams.\n\nWith more rain forecast this weekend, conditions remain dynamic, and LCRA may need to open floodgates in the coming days.",
     "situation_level": "Increased Awareness",
@@ -100,37 +100,37 @@
       {
         "dam": "Buchanan Dam / Lake Buchanan",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Inks Dam / Inks Lake",
         "status": "Flow over the spillway is not expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Wirtz Dam / Lake LBJ",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Starcke Dam / Lake Marble Falls",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Mansfield Dam / Lake Travis",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Tom Miller Dam / Lake Austin",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:20 AM"
+        "as_of": "as of 11/21/26 at 6:20 AM"
       },
       {
         "dam": "Bastrop Dam / Lake Bastrop",
         "status": "No gate operations to pass floodwaters are expected",
-        "as_of": "as of 11/21/26 at 1:10 AM"
+        "as_of": "as of 11/21/26 at 6:10 AM"
       }
     ],
     "source": "https://www.lcra.org/water/flood/",
@@ -155,8 +155,8 @@
   "flood_stage_note": "The 700 ft line is included because it was requested as a reference. It sits in LCRA's flood pool (681–714 ft) and is not a verified official LCRA “flood stage.” LCRA uses “flood stage” as an NWS / local term, not as a 700 ft gauge at Mansfield Dam. Official marked levels are conservation / full pool at 681 ft and the overflow spillway / top of flood pool at 714 ft.",
   "climatology": {
     "start": "1943-01-01",
-    "end": "2026-11-20",
-    "note": "Typical seasonal levels use TWDB daily averages from 1943-01-01 through 2026-11-20. 1940–1941 filling years are excluded because the reservoir was still coming into service and TWDB values fall below LCRA's official 1951 record low (614.18 ft). 1942 is also set aside: that year has only 101 sparse month-end values, not a continuous daily record. Each calendar month's mean, median, and 10th/90th percentiles are computed from that month's yearly mean elevation, so each year counts equally.",
+    "end": "2026-11-21",
+    "note": "Typical seasonal levels use TWDB daily averages from 1943-01-01 through 2026-11-21. 1940–1941 filling years are excluded because the reservoir was still coming into service and TWDB values fall below LCRA's official 1951 record low (614.18 ft). 1942 is also set aside: that year has only 101 sparse month-end values, not a continuous daily record. Each calendar month's mean, median, and 10th/90th percentiles are computed from that month's yearly mean elevation, so each year counts equally.",
     "monthly": [
       {
         "month": 1,
@@ -369,8 +369,8 @@
         "n": 31
       },
       "11": {
-        "mean": 679.36,
-        "n": 20
+        "mean": 679.45,
+        "n": 21
       }
     },
     "doy": [
@@ -2968,11 +2968,11 @@
       },
       {
         "md": "11-21",
-        "n": 83,
-        "mean": 665.3,
-        "median": 669.28,
-        "p10": 638.62,
-        "p90": 681.09
+        "n": 84,
+        "mean": 665.49,
+        "median": 669.57,
+        "p10": 638.65,
+        "p90": 681.27
       },
       {
         "md": "11-22",
@@ -3303,10 +3303,6 @@
   "series": {
     "30d": [
       {
-        "d": "2026-10-22",
-        "e": 677.45
-      },
-      {
         "d": "2026-10-23",
         "e": 677.37
       },
@@ -3421,13 +3417,13 @@
       {
         "d": "2026-11-20",
         "e": 681.37
+      },
+      {
+        "d": "2026-11-21",
+        "e": 681.33
       }
     ],
     "90d": [
-      {
-        "d": "2026-08-23",
-        "e": 679.35
-      },
       {
         "d": "2026-08-24",
         "e": 679.28
@@ -3783,13 +3779,13 @@
       {
         "d": "2026-11-20",
         "e": 681.37
+      },
+      {
+        "d": "2026-11-21",
+        "e": 681.33
       }
     ],
     "1y": [
-      {
-        "d": "2025-11-21",
-        "e": 668.26
-      },
       {
         "d": "2025-11-22",
         "e": 668.31
@@ -5245,13 +5241,13 @@
       {
         "d": "2026-11-20",
         "e": 681.37
+      },
+      {
+        "d": "2026-11-21",
+        "e": 681.33
       }
     ],
     "5y": [
-      {
-        "d": "2021-11-21",
-        "e": 662.75
-      },
       {
         "d": "2021-11-22",
         "e": 662.71
@@ -12551,6 +12547,10 @@
       {
         "d": "2026-11-20",
         "e": 681.37
+      },
+      {
+        "d": "2026-11-21",
+        "e": 681.33
       }
     ],
     "all": [
@@ -16624,7 +16624,7 @@
       },
       {
         "d": "2026-11-01",
-        "e": 679.36
+        "e": 679.45
       }
     ]
   },
@@ -17321,7 +17321,7 @@
       681.66,
       681.51,
       681.37,
-      null,
+      681.33,
       null,
       null,
       null,
@@ -21039,84 +21039,84 @@
   },
   "same_date": [
     {
-      "date": "2016-11-20",
+      "date": "2016-11-21",
       "year": 2016,
       "elevation_ft_msl": 681.29,
       "percent_full": 100.0,
       "is_this_year": false
     },
     {
-      "date": "2017-11-20",
+      "date": "2017-11-21",
       "year": 2017,
-      "elevation_ft_msl": 669.9,
-      "percent_full": 82.2,
+      "elevation_ft_msl": 669.85,
+      "percent_full": 82.1,
       "is_this_year": false
     },
     {
-      "date": "2018-11-20",
+      "date": "2018-11-21",
       "year": 2018,
-      "elevation_ft_msl": 681.32,
+      "elevation_ft_msl": 681.38,
       "percent_full": 100.0,
       "is_this_year": false
     },
     {
-      "date": "2019-11-20",
+      "date": "2019-11-21",
       "year": 2019,
-      "elevation_ft_msl": 671.05,
-      "percent_full": 83.8,
+      "elevation_ft_msl": 671.01,
+      "percent_full": 83.7,
       "is_this_year": false
     },
     {
-      "date": "2020-11-20",
+      "date": "2020-11-21",
       "year": 2020,
-      "elevation_ft_msl": 659.47,
+      "elevation_ft_msl": 659.48,
       "percent_full": 67.6,
       "is_this_year": false
     },
     {
-      "date": "2021-11-20",
+      "date": "2021-11-21",
       "year": 2021,
-      "elevation_ft_msl": 662.79,
-      "percent_full": 72.0,
+      "elevation_ft_msl": 662.75,
+      "percent_full": 71.9,
       "is_this_year": false
     },
     {
-      "date": "2022-11-20",
+      "date": "2022-11-21",
       "year": 2022,
-      "elevation_ft_msl": 640.11,
+      "elevation_ft_msl": 640.06,
       "percent_full": 45.9,
       "is_this_year": false
     },
     {
-      "date": "2023-11-20",
+      "date": "2023-11-21",
       "year": 2023,
-      "elevation_ft_msl": 632.23,
+      "elevation_ft_msl": 632.22,
       "percent_full": 38.7,
       "is_this_year": false
     },
     {
-      "date": "2024-11-20",
+      "date": "2024-11-21",
       "year": 2024,
-      "elevation_ft_msl": 638.55,
+      "elevation_ft_msl": 638.56,
       "percent_full": 44.5,
       "is_this_year": false
     },
     {
-      "date": "2025-11-20",
+      "date": "2025-11-21",
       "year": 2025,
-      "elevation_ft_msl": 668.19,
-      "percent_full": 79.5,
+      "elevation_ft_msl": 668.26,
+      "percent_full": 79.6,
       "is_this_year": false
     },
     {
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "year": 2026,
-      "elevation_ft_msl": 681.37,
+      "elevation_ft_msl": 681.33,
       "percent_full": 100.0,
       "is_this_year": true
     }
   ],
-  "same_date_note": "TWDB daily average elevation on November 20 of each year. Today's live LCRA reading is 681.35 ft; the TWDB figure for today is a daily average and may differ, especially while the lake is rising or falling quickly.",
+  "same_date_note": "TWDB daily average elevation on November 21 of each year. Today's live LCRA reading is 681.31 ft; the TWDB figure for today is a daily average and may differ, especially while the lake is rising or falling quickly.",
   "rises_2026": [
     {
       "id": "november",
@@ -21139,12 +21139,12 @@
       "start_time": "2026-11-09T16:20:01-06:00",
       "start_label": "Nov 9, 2026, 4:20 PM CST",
       "start_ft": 677.35,
-      "end_time": "2026-11-21T01:40:08-06:00",
-      "end_label": "Nov 21, 2026, 1:40 AM CST",
-      "end_ft": 681.35,
-      "rise_ft": 4.0,
-      "days": 11.39,
-      "rate_ft_per_day": 0.35,
+      "end_time": "2026-11-21T06:40:09-06:00",
+      "end_label": "Nov 21, 2026, 6:40 AM CST",
+      "end_ft": 681.31,
+      "rise_ft": 3.96,
+      "days": 11.6,
+      "rate_ft_per_day": 0.34,
       "peak_24h": {
         "ft": 2.77,
         "start_time": "2026-11-10T10:40:10-06:00",
