@@ -30726,4 +30726,5 @@ date,elevation_ft_msl,percent_full,storage_acft,source
 2026-11-20,681.37,100.0,1122139,"TWDB (waterdatafortexas.org, LCRA gauge)"
 2026-11-21,681.25,100.0,1119845,"TWDB (waterdatafortexas.org, LCRA gauge)"
 2026-11-22,681.12,100.0,1117363,"TWDB (waterdatafortexas.org, LCRA gauge)"
-2026-11-23,680.99,100.0,1114886,"TWDB (waterdatafortexas.org, LCRA gauge)"
+2026-11-23,680.97,99.9,1114505,"TWDB (waterdatafortexas.org, LCRA gauge)"
+2026-11-24,680.96,99.9,1114315,"TWDB (waterdatafortexas.org, LCRA gauge)"
